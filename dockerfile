@@ -1,16 +1,9 @@
-FROM python:3.12
-WORKDIR /usr/local/app
+# Use the official AlmaLinux base image
+FROM almalinux:latest
 
-# Install the application dependencies
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Install vim, wget, and curl
+RUN dnf install -y vim wget curl && \
+    dnf clean all
 
-# Copy in the source code
-COPY src ./src
-EXPOSE 5000
-
-# Setup an app user so the container doesn't run as the root user
-RUN useradd app
-USER app
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Set the default command to run when starting the container
+CMD ["bash"]
